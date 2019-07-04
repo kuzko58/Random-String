@@ -9,7 +9,7 @@ const numbers = [0,1,2,3,4,5,6,7,8,9];
 const randomizer = (bank, n) => {
   let result = [];
   while(result.length < n) {
-    let val = bank[Math.floor(Math.random() * n)];
+    let val = bank[Math.floor(Math.random() * bank.length)];
     if(!result.includes(val)) {
       result.push(val);
   }
