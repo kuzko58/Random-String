@@ -18,19 +18,27 @@ body {
   text-transform: uppercase;
 }
 
-#genButton {
+button {
   outline: none;
   display: block;
   margin: 20px 0px;
   border: 1px solid lightgray;
   border-radius: 4px;
   background-color: white;
-  color: mediumturquoise;
   font-size: 18px;
   text-transform: uppercase;
   padding: 10px;
   box-sizing: border-box;
   box-shadow: 0px 1px 4px rgba(128,128,128,.1), 0px -1px 4px rgba(128,128,128,.1);
+}
+
+#genButton {
+  color: mediumturquoise;
+}
+
+#clearButton {
+  display: none;
+  color: red;
 }
 
 .container p {

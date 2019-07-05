@@ -1,4 +1,5 @@
 const [input1, input2, input3, genButton, outputBox] = [document.getElementById('input1'), document.getElementById('input2'), document.getElementById('input3'), document.getElementById('genButton'), document.getElementById('outputBox')];
+const [input4, input5, clearButton] = [document.getElementById('input4'), document.getElementById('input5'), document.getElementById('clearButton')];
 const letters = (() => {
   const caps = [...Array(26)].map((val, i) => String.fromCharCode(i + 65));
   return caps;
@@ -34,14 +35,21 @@ const conCater = (arr) => {
   return result;
 };
 
-const looper = (a, b, n) => {
+const looper = (arr1, arr2, a, b, n) => {
   let result = [];
-  if(!n || n < 1) n = 1;
+  n = n || 1;
   for (i = 0; i < n; i++) {
-    let el = conCater([randomizer(letters, a), randomizer(numbers, b)]);
+    let el = conCater([randomizer(arr1, a), randomizer(arr2, b)]);
     result.push(el);
   }
   return result;
+};
+
+const removeElementsByClass = (className) => {
+  const elements = document.getElementsByClassName(className);
+  while(elements.length > 0){
+      elements[0].parentNode.removeChild(elements[0]);
+  }
 };
 
 const inputCheck = (input) => {
@@ -63,9 +71,23 @@ input3.addEventListener('input', () => {
   if(Number(input3.value) > 50) input3.value = 50;
 });
 
+input4.addEventListener('input', () => {
+  input4.value = input4.value.replace(/[^A-Z]/g, '').slice(0, 26);
+  let filter = new Set(input4.value);
+  input4.value = Array.from(filter).join('');
+});
+
+input5.addEventListener('input', () => {
+  input5.value = input5.value.replace(/[^1-9]/g, '').slice(0, 9);
+  let filter = new Set(input5.value);
+  input5.value = Array.from(filter).join('');
+});
+
 genButton.addEventListener('click', () => {
-  const x = Number(input1.value);
-  const y = Number(input2.value);
+  const alpha = input4.value || letters;
+  const num = input5.value || numbers;
+  const x = input4.value.length || Number(input1.value);
+  const y = input5.value.length || Number(input2.value);
   const z = Number(input3.value);
   if (x && y) {
     const table = document.createElement('table');
@@ -78,7 +100,7 @@ genButton.addEventListener('click', () => {
     tableRow.appendChild(tHead2);
     table.appendChild(tableRow);
     table.classList.add('output-table');
-    let tableData = looper(x, y, z);
+    let tableData = looper(alpha, num, x, y, z);
     tableData.forEach((el) => {
       let tRow = document.createElement('tr');
       tdata1 = document.createElement('td');
@@ -92,5 +114,16 @@ genButton.addEventListener('click', () => {
       table.appendChild(tRow);
     });
     outputBox.appendChild(table);
+    clearButton.style.display = 'block';
   } else outputBox.innerHTML = 'invalid input';
+});
+
+clearButton.addEventListener('click', () => {
+  removeElementsByClass('output-table');
+  input1.value = '';
+  input2.value = '';
+  input3.value = '';
+  input4.value = '';
+  input5.value = '';
+  clearButton.style.display = 'none';
 });
